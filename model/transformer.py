@@ -19,24 +19,24 @@ class Transformer(nn.Module):
     def __init__(self, config):
         super(Transformer, self).__init__()
         self.encoder = Encoder(
-            config.vocab_size,
-            config.n_position,
-            config.n_layers,
-            config.head,
-            config.model_dim,
-            config.ff_dim,
-            config.dropout_rate,
+            config['vocab_size'],
+            config['n_position'],
+            config['n_layers'],
+            config['head'],
+            config['model_dim'],
+            config['ff_dim'],
+            config['dropout_rate'],
         )
         self.decoder = Decoder(
-            config.vocab_size,
-            config.n_layers,
-            config.head,
-            config.model_dim,
-            config.n_position,
-            config.ff_dim,
-            config.dropout_rate,
+            config['vocab_size'],
+            config['n_layers'],
+            config['head'],
+            config['model_dim'],
+            config['n_position'],
+            config['ff_dim'],
+            config['dropout_rate'],
         )
-        self.generator = Generator(config.model_dim, config.vocab_size)
+        self.generator = Generator(config['model_dim'], config['vocab_size'])
 
         for p in self.parameters():
             if p.dim() > 1:

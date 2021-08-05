@@ -3,7 +3,6 @@ from torch.utils.data import Dataset
 from torch.utils.data.dataset import T_co
 from torch.utils.data.sampler import RandomSampler, BatchSampler
 
-import config as config
 
 class ChatDataSet(Dataset):
     r"""Custom Dataset class
@@ -40,7 +39,7 @@ class SampledDataLoader(BatchSampler):
             source_list.append(source)
             target_list.append(target)
             if count % self.batch_size == 0:
-                assert len(source_list) == config.batch_size
+                assert len(source_list) == self.batch_size
                 source = self._pad_sequence(source_list, padding=self.padding)
                 source_list.clear()
                 target = self._pad_sequence(target_list, padding=self.padding)

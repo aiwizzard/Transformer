@@ -9,11 +9,9 @@ and arrange in specific order for the model to be trained. The format is
 
 import os
 
-import config as config
-
-corpus_movie_conv = os.path.join(os.getcwd(), config.data_dir, 'cornell movie-dialogs corpus/movie_conversations.txt')
-corpus_movie_lines = os.path.join(os.getcwd(), config.data_dir, 'cornell movie-dialogs corpus/movie_lines.txt')
-output_path = os.path.join(os.getcwd(), config.data_dir, 'processed_cornell_data.txt')
+corpus_movie_conv = os.path.join(os.getcwd(), 'data/', 'cornell movie-dialogs corpus/movie_conversations.txt')
+corpus_movie_lines = os.path.join(os.getcwd(), 'data/', 'cornell movie-dialogs corpus/movie_lines.txt')
+output_path = os.path.join(os.getcwd(), 'data/', 'processed_cornell_data.txt')
 
 with open(corpus_movie_conv, 'r', encoding='iso-8859-1') as c:
     conv = c.readlines()

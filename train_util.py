@@ -2,9 +2,8 @@ import torch
 import numpy as np
 import pickle
 from tqdm import tqdm
-import config as config
 
-def create_train_data(tokenizer, use_pickle=False) -> list:
+def create_train_data(config, tokenizer, use_pickle=False) -> list:
     r"""Create train data
 
     If the train data is saved as pickle object load that.
@@ -12,17 +11,17 @@ def create_train_data(tokenizer, use_pickle=False) -> list:
     """
     data = []
     if use_pickle:
-        with open(config.train_data, 'rb') as file:
+        with open(config['train_data'], 'rb') as file:
             data = pickle.load(file)
     else:
-        with open(config.text_data, 'r', encoding='utf-8') as file:
+        with open(config['text_data'], 'r', encoding='utf-8') as file:
             lines = file.readlines()
         for i in tqdm(range(0, len(lines), 3)):
             li = []
             for line in lines[i: i+2]:
-                li.append(line[:config.max_len])
+                li.append(line[:config['max_len']])
             data.append(tuple(map(tokenizer.encode, li)))
-        with open(config.train_data, 'wb') as file:
+        with open(config['train_data'], 'wb') as file:
             pickle.dump(data, file)
     return data
 
@@ -37,9 +36,9 @@ def subsequent_mask(seq):
 
 def create_masks(source, target, pad=0):
     r"""Create source and target mask"""
-    source_mask = (source != pad).unsqueeze(-2).to(config.device)
+    source_mask = (source != pad).unsqueeze(-2).to(source.device)
 
-    target_mask = (target != pad).unsqueeze(-2).to(config.device)
+    target_mask = (target != pad).unsqueeze(-2).to(target.device)
     target_mask = target_mask & subsequent_mask(target)
 
     return source_mask, target_mask

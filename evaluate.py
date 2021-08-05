@@ -1,8 +1,8 @@
+import yaml
 import torch
 import numpy as np
 from transformers.models.bert.tokenization_bert import BertTokenizer
 
-import config as config
 from model.transformer import Transformer
 from train_util import subsequent_mask
 
@@ -30,7 +30,7 @@ def evaluate(config, input_seq, tokenizer, model, device, verbose=True):
     ys = torch.ones(1, 1).fill_(tokenizer.cls_token_id).long().to(device)
     # don't want to calculate gradients(no backprop)
     with torch.no_grad():
-        for i in range(config.max_len - 1):
+        for i in range(config['max_len'] - 1):
             # decode the encoded sequence and get the result
             out = model.decode(ys, mem, src_mask,
                              subsequent_mask(ys).type_as(ys))
@@ -51,12 +51,17 @@ def evaluate(config, input_seq, tokenizer, model, device, verbose=True):
     return text
 
 if __name__ == '__main__':
-    # Load the model
-    state_dict = torch.load(f'{config.data_dir}/{config.fn}.pth', map_location=config.device)
-    # Bert Tokenizer
-    tokenizer = BertTokenizer.from_pretrained(config.bert_model_name)
+    with open('config.yaml') as file:
+        config = yaml.load(file, Loader=yaml.FullLoader)
 
-    model = Transformer(config).to(config.device)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    
+    # Load the model
+    state_dict = torch.load(f"{config['data_dir']}/{config['fn']}.pth", map_location=device)
+    # Bert Tokenizer
+    tokenizer = BertTokenizer.from_pretrained(config['bert_model_name'])
+
+    model = Transformer(config).to(device)
     model.load_state_dict(state_dict['model'])
     model.eval()
     # model.freeze()
@@ -66,4 +71,4 @@ if __name__ == '__main__':
         if s == 'q':
             break
         print('BOT>', end='')
-        text = evaluate(config, s, tokenizer, model, config.device, True)
+        text = evaluate(config, s, tokenizer, model, device, True)
