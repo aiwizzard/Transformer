@@ -50,7 +50,7 @@ def evaluate(config, input_seq, tokenizer, model, device, verbose=True):
         print(f'{text}')
     return text
 
-if __name__ == '__main__':
+def main():
     with open('config.yaml') as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
@@ -72,3 +72,6 @@ if __name__ == '__main__':
             break
         print('BOT>', end='')
         text = evaluate(config, s, tokenizer, model, device, True)
+
+if __name__ == '__main__':
+    main()
