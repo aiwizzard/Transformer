@@ -6,6 +6,7 @@ To train the model in google colab run train_colab.ipynb file in colab
 
 ##Citations
 
+```bibtex
 @misc{vaswani2017attention,
     title   = {Attention Is All You Need}, 
     author  = {Ashish Vaswani and Noam Shazeer and Niki Parmar and Jakob Uszkoreit and Llion Jones and Aidan N. Gomez and Lukasz Kaiser and Illia Polosukhin},
@@ -14,4 +15,5 @@ To train the model in google colab run train_colab.ipynb file in colab
     archivePrefix = {arXiv},
     primaryClass = {cs.CL}
 }
+```
 
